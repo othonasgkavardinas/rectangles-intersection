@@ -1,4 +1,4 @@
-# rectangle-intersection-assignment
+# rectangles-intersection-assignment
 
 ## Εύρεση τομής πολυγώνων
 Τεχνικές Αντικειμενοστραφούς Προγραμματισμού (Assignment 1)  
