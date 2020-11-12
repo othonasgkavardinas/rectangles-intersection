@@ -23,9 +23,9 @@ class RectangleSet{
 		for (int i=0; i<rectangleList.length; i++){
 			for (int j=0; j<tempLowerBound.length; j++){
 				randomLength = randomGenerator.nextDouble()*(2*avlen);
-				do{
+				do
 					randomBound = randomGenerator.nextDouble()*(maxdomain);
-				}while(randomBound-randomLength<0);
+				while(randomBound-randomLength<0);
 				tempUpperBound[j] = randomBound;
 				tempLowerBound[j] = randomBound - randomLength;
 			}
@@ -51,58 +51,47 @@ class RectangleSet{
 		String tempString="";
 		for (int i=0; i<rectangleList.length; i++){
 			tempString+=(rectangleList[i]);
-			if(i<rectangleList.length-1){
+			if(i<rectangleList.length-1)
 				tempString+="\n";
-			}
 		}
 		return tempString;
 	}
 		
 	public ArrayList<Rectangle> intersectsRange(Rectangle other){
 		ArrayList<Rectangle> tempArrayList = new ArrayList<Rectangle>();
-		for (int i=0; i<rectangleList.length; i++){
-			if(other.intersects(rectangleList[i])){
+		for (int i=0; i<rectangleList.length; i++)
+			if(other.intersects(rectangleList[i]))
 				tempArrayList.add(rectangleList[i]);
-			}
-		}
 		return tempArrayList;
 	}
 	
 	public ArrayList<Rectangle> insideRange(Rectangle other){
 		ArrayList<Rectangle> tempArrayList = new ArrayList<Rectangle>();
-		for (int i=0; i<rectangleList.length; i++){
-			if(rectangleList[i].inside(other)){
+		for (int i=0; i<rectangleList.length; i++)
+			if(rectangleList[i].inside(other))
 				tempArrayList.add(rectangleList[i]);
-			}
-		}
 		return tempArrayList;
 	}
 	
 	public Rectangle MBR(){
 		double[] tempLowerBound = new double[dimensionality];
 		double[] tempUpperBound = new double[dimensionality];
-		for (int i=0; i<dimensionality; i++){
-			tempLowerBound[i] = rectangleList[0].project(i)[0];
-			tempUpperBound[i] = rectangleList[0].project(i)[1];
-			for (int j=0; j<rectangleList.length; j++){
-				if(tempLowerBound[i]>rectangleList[j].project(i)[0]){
-					tempLowerBound[i] = rectangleList[j].project(i)[0];
-				}
-				if(tempUpperBound[i]<rectangleList[j].project(i)[1]){
-					tempUpperBound[i] = rectangleList[j].project(i)[1];
-				}
+		int[] dimensions = { 0, 1 };
+		for (int dimension: dimensions)
+			for (int i=0; i<dimensionality; i++){
+				tempLowerBound[i] = rectangleList[dimension].project(i)[dimension];
+				for (int j=0; j<rectangleList.length; j++)
+					if(tempLowerBound[i]>rectangleList[j].project(i)[dimension])
+						tempLowerBound[i] = rectangleList[j].project(i)[dimension];
 			}
-		}
-		Rectangle tempRectangle = new Rectangle(dimensionality, tempLowerBound, tempUpperBound);
-		return tempRectangle;
+		return new Rectangle(dimensionality, tempLowerBound, tempUpperBound);
 	}
 	
 	public double[] averageProjectionLength(){
 		double[] tempArray = new double[dimensionality];
 		for(int i=0; i<tempArray.length; i++){
-			for (int j=0; j<rectangleList.length; j++){
+			for (int j=0; j<rectangleList.length; j++)
 				tempArray[i]+=rectangleList[j].project(i)[1] - rectangleList[j].project(i)[0];
-			}
 			tempArray[i] = tempArray[i]/(double)cardinality;
 		}
 		return tempArray;
@@ -110,42 +99,33 @@ class RectangleSet{
 	
 	//BONUS+++++
 	public ArrayList<Rectangle[]> intersectionJoin(RectangleSet other){
-		ArrayList<Rectangle[]> tempArrayList = new ArrayList<Rectangle[]>();
-		for (int i=0; i<this.rectangleList.length; i++){
-			for (int j=0; j<other.rectangleList.length; j++){
-				if (this.rectangleList[i].intersects(other.rectangleList[j])){
-					Rectangle[] tempArray = {this.rectangleList[i], other.rectangleList[j]};
-					tempArrayList.add(tempArray);
-				}
-			}
-		}
-		return tempArrayList;
+		Consumer consumer = (x, y) -> x.intersects(y);
+		return makeListOfRectangles(other, consumer);
 	}
 	
 	
 	public ArrayList<Rectangle[]> farPairs(RectangleSet other, int dist){
-		ArrayList<Rectangle[]> tempArrayList = new ArrayList<Rectangle[]>();
-		for (int i=0; i<this.rectangleList.length; i++){
-			for (int j=0; j<other.rectangleList.length; j++){
-				if(this.rectangleList[i].mindist(other.rectangleList[j]) >= dist){
-					Rectangle[] tempArray = {this.rectangleList[i], other.rectangleList[j]};
-					tempArrayList.add(tempArray);
-				}
-			}
-		}
-		return tempArrayList;
+		Consumer consumer = (x, y) -> x.mindist(y) >= dist;
+		return makeListOfRectangles(other, consumer);
 	}
 	
 	public ArrayList<Rectangle[]> closePairs(RectangleSet other, int dist){
+		Consumer consumer = (x, y) -> x.maxdist(y) <= dist;
+		return makeListOfRectangles(other, consumer);
+	}
+	
+	public ArrayList<Rectangle[]> makeListOfRectangles(RectangleSet other, Consumer consumer) {
 		ArrayList<Rectangle[]> tempArrayList = new ArrayList<Rectangle[]>();
-		for (int i=0; i<this.rectangleList.length; i++){
-			for (int j=0; j<other.rectangleList.length; j++){
-				if(this.rectangleList[i].maxdist(other.rectangleList[j]) <= dist){
-					Rectangle[] tempArray = {this.rectangleList[i], other.rectangleList[j]};
+		for (int i=0; i<rectangleList.length; i++)
+			for (int j=0; j<other.rectangleList.length; j++)
+				if(consumer.useMethod(rectangleList[i], rectangleList[j])){
+					Rectangle[] tempArray = {rectangleList[i], other.rectangleList[j]};
 					tempArrayList.add(tempArray);
 				}
-			}
-		}
 		return tempArrayList;
+	}
+	
+	private interface Consumer {
+		boolean useMethod(Rectangle r1, Rectangle r2);
 	}
 }
