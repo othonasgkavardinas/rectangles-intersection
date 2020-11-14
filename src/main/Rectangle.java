@@ -92,7 +92,7 @@ class Rectangle{
 			for (int i=0; i<lowerBound.length; i++){
 				if(upperBound[i]<other.lowerBound[i])
 					distance+=(other.lowerBound[i]-upperBound[i])*(other.lowerBound[i]-upperBound[i]);
-				else if(this.lowerBound[i]>other.upperBound[i])
+				else if(lowerBound[i]>other.upperBound[i])
 					distance+=(lowerBound[i]-other.upperBound[i])*(lowerBound[i]-other.upperBound[i]);
 			}
 			return Math.sqrt(distance);
@@ -109,4 +109,5 @@ class Rectangle{
 		}
 		return Math.sqrt(distance);
 	}
+	
 }
