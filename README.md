@@ -1,4 +1,4 @@
-# rectangles-intersection
+# simple-rectangles-intersection
 
 ## Εύρεση τομής πολυγώνων
 Τεχνικές Αντικειμενοστραφούς Προγραμματισμού (Assignment 1)  
