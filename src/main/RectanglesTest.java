@@ -38,7 +38,7 @@ class RectanglesTest
 		// test MBR
 		System.out.println();
 		System.out.println("MBR of Collection 1:");
-		System.out.println(rset.MBR());
+		System.out.println(rset.mbr());
 		System.out.println("\n");
 		
 		// test projection

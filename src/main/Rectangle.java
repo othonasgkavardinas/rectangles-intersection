@@ -3,8 +3,10 @@
 
 package main;
 
-class Rectangle{
-	private int dimensionality;
+import lombok.Getter;
+
+public class Rectangle{
+	private @Getter int dimensionality;
 	private double[] lowerBound;
 	private double[] upperBound;
 	
@@ -20,45 +22,45 @@ class Rectangle{
 		this.upperBound = upperBound;
 	}
 	
-	public int getDimensionality(){
-		return dimensionality;
-	}
-	
 	public String toString(){
-		String tempString="";
-		for (int i=0; i<lowerBound.length; i++){
-			tempString+="["+lowerBound[i]+","+upperBound[i]+"]";
+		String tempString="{ " + lowerBound[0] + ", " + upperBound[0] + " }";
+		for (int i=1; i<lowerBound.length; i++){
+			tempString += ", { " + lowerBound[i] + ", " + upperBound[i] + " }";
 		}
 		return tempString;
 	}
 
 	public Rectangle copy(){
 		Rectangle copy = new Rectangle(dimensionality, lowerBound, upperBound);
-		String tempString ="{";
-		double[][] bounds = { lowerBound, upperBound };
-		for (double[] bound : bounds) {
-			for (int i=0; i<bound.length; i++)
-				tempString += "" + bound[i] + ",";
-			tempString = tempString.substring(0, tempString.length()-1);
-			tempString+="}, {";
-		}
-		System.out.println("Copy set to ("+dimensionality+", "+tempString+")");
+		printRectangleCopy();
 		return copy;
+	}
+	
+	private void printRectangleCopy() {
+		String tempString = "";
+		double[][] bounds = { lowerBound, upperBound };
+		if(lowerBound.length > 0) 
+			for (double[] bound : bounds) {
+				tempString += "{" + bound[0];
+				for (int i=1; i<bound.length; i++)
+					tempString += ", " + bound[i];
+				tempString+="}, ";
+			}
+		tempString = tempString.substring(0, tempString.length()-2);
+		System.out.println("Copy set to ("+ dimensionality + ", " + tempString + ")");
 	}
 	
 	public double[] project(int dimension){
 		return new double[] { lowerBound[dimension], upperBound[dimension] };
-		
 	}
 	
 	public void enlarge(Rectangle other){
-		for (int i=0; i<lowerBound.length; i++)
-			for(int j=0; j<lowerBound.length; j++){
-				if (lowerBound[j] > other.project(j)[i])
-					lowerBound[j] = other.project(j)[i];
-				if (upperBound[j] < other.project(j)[i])
-					upperBound[j] = other.project(j)[i];
-			}
+		for (int i=0; i<dimensionality; i++) {
+			if (lowerBound[i] > other.project(i)[0])
+				lowerBound[i] = other.project(i)[0];
+			if (upperBound[i] < other.project(i)[1])
+				upperBound[i] = other.project(i)[1];
+		}
 	}
 	
 	public boolean intersects(Rectangle other){
@@ -84,7 +86,7 @@ class Rectangle{
 		return false;
 	}
 	
-	public double mindist(Rectangle other){
+	public double minDistance(Rectangle other){
 		double distance = 0;
 		if(this.intersects(other))
 			return distance;
@@ -99,7 +101,7 @@ class Rectangle{
 		}
 	}
 	
-	public double maxdist(Rectangle other){
+	public double maxDistance(Rectangle other){
 		double distance = 0;
 		for (int i=0; i<lowerBound.length; i++){
 			if(upperBound[i]<other.lowerBound[i])
@@ -109,5 +111,4 @@ class Rectangle{
 		}
 		return Math.sqrt(distance);
 	}
-	
 }

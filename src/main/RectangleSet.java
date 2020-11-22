@@ -4,11 +4,14 @@
 package main;
 
 import java.util.Random;
+
+import lombok.Getter;
+
 import java.util.ArrayList;
 
-class RectangleSet{
-	private int dimensionality;
-	private int cardinality;
+public class RectangleSet{
+	private @Getter int dimensionality;
+	private @Getter int cardinality;
 	private Random randomGenerator = new Random(0);
 	private Rectangle[] rectangleList;
 	
@@ -34,16 +37,8 @@ class RectangleSet{
 			tempLowerBound = new double[dimensionality];
 		}
 	}
-
-	public int getDimensionality(){
-		return dimensionality;
-	}
 	
-	public int getCardinality(){
-		return cardinality;
-	}
-	
-	public Rectangle getRectangle(int target){
+	public Rectangle findRectangle(int target){
 		return rectangleList[target];
 	}
 	
@@ -73,7 +68,7 @@ class RectangleSet{
 		return tempArrayList;
 	}
 	
-	public Rectangle MBR(){
+	public Rectangle mbr(){
 		double[] tempLowerBound = new double[dimensionality];
 		double[] tempUpperBound = new double[dimensionality];
 		int[] dimensions = { 0, 1 };
@@ -105,12 +100,12 @@ class RectangleSet{
 	
 	
 	public ArrayList<Rectangle[]> farPairs(RectangleSet other, int dist){
-		Consumer consumer = (x, y) -> x.mindist(y) >= dist;
+		Consumer consumer = (x, y) -> x.minDistance(y) >= dist;
 		return makeListOfRectangles(other, consumer);
 	}
 	
 	public ArrayList<Rectangle[]> closePairs(RectangleSet other, int dist){
-		Consumer consumer = (x, y) -> x.maxdist(y) <= dist;
+		Consumer consumer = (x, y) -> x.maxDistance(y) <= dist;
 		return makeListOfRectangles(other, consumer);
 	}
 	
