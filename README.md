@@ -8,7 +8,8 @@
 Contains the project and the expected output.
 
 ### Installation
-Import Java project to Eclipse.
+Import Java project to Eclipse.  
+Install lib/lombok.java to Eclipse.
 
 ### Tested on
 Eclipse 2020-03  
