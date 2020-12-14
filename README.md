@@ -12,5 +12,9 @@ Import Java project to Eclipse.
 Install lib/lombok.jar to Eclipse.
 
 ### Tested on
-Eclipse 2020-03  
-JavaSE-13 (jdk-13.0.2)
+Eclipse 2020-09  
+Apache Maven 3.6.3  
+JavaSE-11 (openjdk 11.0.9.1)
+
+### Dependencies
+Lombok 1.18.16
