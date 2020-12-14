@@ -1,7 +1,7 @@
 //ONOMA: OTHONAS GKAVARDINAS 
 //AM: 2620
 
-package main;
+package com.github.othonasgkavardinas.app;
 
 import java.util.Random;
 

@@ -1,12 +1,14 @@
-package test;
+package com.github.othonasgkavardinas.app;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import main.Rectangle;
-
-class RectangleTest {
+public class RectangleTest {
 
 	@Test
 	public void copyTest() {
@@ -15,14 +17,14 @@ class RectangleTest {
 		assertNotEquals(rectangle1, rectangle2);
 		assertEquals(rectangle1.getDimensionality(), rectangle2.getDimensionality());
 		for(int i=0; i<rectangle1.getDimensionality(); i++)
-			assertArrayEquals(rectangle1.project(i), rectangle2.project(i));		
+			assertArrayEquals(rectangle1.project(i), rectangle2.project(i), 0);		
 	}
 	
 	@Test
 	public void projectTest() {
 		Rectangle rectangle = new Rectangle(2, new double[] { 1, 2 }, new double[] { 3, 4 });		
-		assertArrayEquals(rectangle.project(0), new double[] { 1, 3 });
-		assertArrayEquals(rectangle.project(1), new double[] { 2, 4 });
+		assertArrayEquals(rectangle.project(0), new double[] { 1, 3 }, 0);
+		assertArrayEquals(rectangle.project(1), new double[] { 2, 4 }, 0);
 	}
 	
 	@Test
@@ -30,8 +32,8 @@ class RectangleTest {
 		Rectangle rectangle1 = new Rectangle(2, new double[] { 3, 2 }, new double[] { 4, 5 });		
 		Rectangle rectangle2 = new Rectangle(2, new double[] { 1, 3 }, new double[] { 4, 8 });		
 		rectangle1.enlarge(rectangle2);
-		assertArrayEquals(rectangle1.project(0), new double[] { 1, 4 });
-		assertArrayEquals(rectangle1.project(1), new double[] { 2, 8 });
+		assertArrayEquals(rectangle1.project(0), new double[] { 1, 4 }, 0);
+		assertArrayEquals(rectangle1.project(1), new double[] { 2, 8 }, 0);
 	}
 	
 	@Test
