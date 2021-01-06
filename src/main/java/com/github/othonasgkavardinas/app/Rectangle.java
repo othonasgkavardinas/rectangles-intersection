@@ -1,6 +1,3 @@
-//ONOMA: OTHONAS GKAVARDINAS 
-//AM: 2620
-
 package com.github.othonasgkavardinas.app;
 
 import lombok.Getter;
